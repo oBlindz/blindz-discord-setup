@@ -1,0 +1,29 @@
+{
+  "name": "blindz@discord-setup",
+  "version": "0.0.1",
+  "description": "This NPM will help you to setup your discord js project",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oBlindz/blindz-discord-setup.git"
+  },
+  "keywords": [
+    "Discord",
+    "Discord",
+    "Bot",
+    "DiscordJS"
+  ],
+  "author": "yblindz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oBlindz/blindz-discord-setup/issues"
+  },
+  "homepage": "https://github.com/oBlindz/blindz-discord-setup#readme",
+  "dependencies": {
+    "@inquirer/prompts": "^7.4.0"
+  }
+}
