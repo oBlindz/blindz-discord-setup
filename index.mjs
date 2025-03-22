@@ -1,8 +1,11 @@
 // TOPICS //  
-// [ 1 ] Create the terminal inputs commands
+// [ 1 ] Create the terminal inputs commands : DONE
 // [ 2 ] Instaling the dependencies
 // [ 3 ] Creating the files and folders according the first step
 // === //  
+
+// Child Process
+import { execSync } from 'node:child_process';
 
 // Temrinal input commands
 import { input, select, confirm } from '@inquirer/prompts';
@@ -104,6 +107,10 @@ function terminalInputs() {
 
     if(license){
       // Start step 2
+      console.log('Installing dependencies...'); 
+      execSync('npm i discord.js');
+      console.log('Dependencies installed');
+      // Start step 3
     }
   };
 
