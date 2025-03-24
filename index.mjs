@@ -1,11 +1,23 @@
 // TOPICS //  
 // [ 1 ] Create the terminal inputs commands : DONE
-// [ 2 ] Instaling the dependencies
-// [ 3 ] Creating the files and folders according the first step
+// [ 2 ] Instaling the dependencies : DONE
+// [ 3 ] Creating the directories
+//   - commands
+//     - utility (optional)
+// [ 4 ] Creating the files (according the user preference)
+//   - deploycommands
+//   - index
+//   - ping (optional)
 // === //  
+
+// Mkdir SYNC 
+import { mkdirSync } from 'node:fs';
 
 // Child Process
 import { execSync } from 'node:child_process';
+
+// Global variables
+var testcommand;
 
 // Temrinal input commands
 import { input, select, confirm } from '@inquirer/prompts';
@@ -52,6 +64,8 @@ function terminalInputs() {
     const testCommand = await confirm({
       message: "Do you want a test command? "
     });
+
+    testcommand = testCommand.valueOf();
 
     // Call project author
     projectAuthor();
@@ -111,6 +125,20 @@ function terminalInputs() {
       execSync('npm i discord.js');
       console.log('Dependencies installed');
       // Start step 3
+        // Creating the 'commands' directory
+        console.log('creating directories');
+        mkdirSync('commands', (err => {
+          if(err) console.error(err);
+        }));
+        console.log("'commands' directory created");
+
+        // If "testcommand === 'yes'" create one more directory
+        if(testcommand == true) {
+          mkdirSync('./commands/utility', (err => {
+            console.error(err);
+          }));
+          console.log("'utility' directory created");
+        };
     }
   };
 
