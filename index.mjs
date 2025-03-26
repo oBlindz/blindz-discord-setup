@@ -125,7 +125,7 @@ const rest = new REST().setToken(token);
   `; 
 
   // Test command area
-  if(tstcmd == 'Yes'){
+  if(tstcmd == true){
     const cjs_tst_code = `const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
