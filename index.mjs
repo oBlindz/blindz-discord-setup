@@ -145,6 +145,98 @@ module.exports = {
   writeFileSync('deploycommands.cjs', cjs_deploy_code, 'utf8');
 }; 
 
+// Creating mjs
+function createmjs(tstcmd) {
+  const mjs_main_code = `import {Client, Events, GatewayIntentBits, REST, Routes} from 'discord.js';
+import config from './config.json' assert {type: 'json'};
+
+const client = new Client({intents: [GatewayIntentBits.Guilds] });
+client.login(config.token);
+
+const commands = [
+  // All commands are objects that contains name and description at least
+  ];
+
+const rest = new REST({version: '10'}).setToken(config.token);
+
+try {
+  console.log('Refreshing commands');
+  await rest.put(Routes.applicationCommands(config.clientId), {body: commands});
+  console.log('Commands refreshed');
+} catch (err) {
+  console.error(err);
+}
+
+client.on(Events.InteractionCreate, interaction => {
+  if(!interaction.isChatInputCommand()) return; 
+  
+  // Register your command here
+});
+
+client.once(Events.ClientReady, () => {
+  console.log('bot online');
+});
+  `; 
+
+  const mjs_main_code_tstcmd = `import {Client, Events, GatewayIntentBits, REST, Routes} from 'discord.js';
+import config from './config.json' assert {type: 'json'};
+
+// Import your commands 
+import ping from './commands/utility/ping.mjs';
+
+const client = new Client({intents: [GatewayIntentBits.Guilds] });
+client.login(config.token);
+
+const commands = [
+  // All commands are objects that contains name and description at least
+  {
+    name: ping.name,
+    description: ping.description
+  },
+];
+
+const rest = new REST({version: '10'}).setToken(config.token);
+
+try {
+  console.log('Refreshing commands');
+  await rest.put(Routes.applicationCommands(config.clientId), {body: commands});
+  console.log('Commands refreshed');
+} catch (err) {
+  console.error(err);
+}
+
+client.on(Events.InteractionCreate, interaction => {
+  if(!interaction.isChatInputCommand()) return; 
+  
+  // Register your command here
+  if(interaction.commandName === 'ping'){
+    interaction.reply('pongoo');
+  };
+});
+
+client.once(Events.ClientReady, () => {
+  console.log('bot online');
+});
+  `;
+
+  const mjs_ping_code = `const ping = {
+  name: 'ping',
+  description: 'returns pong',
+};
+
+export default ping;
+  `;
+
+  if(tstcmd == true) {
+    // Create mjs_main_code_tstcmd file
+    writeFileSync('./commands/utility/ping.mjs', mjs_ping_code, 'utf8');
+    writeFileSync('main.mjs', mjs_main_code_tstcmd, 'utf8');
+  } else {
+    // Create mjs_main_code file
+    writeFileSync('main.mjs', mjs_main_code, 'utf8');
+  };
+};
+
 // Temrinal input commands
 import { input, select, confirm } from '@inquirer/prompts';
 function terminalInputs() {
@@ -285,7 +377,7 @@ function terminalInputs() {
               break;
             case 'mjs': 
               // Call func mjs
-
+              createmjs(testcommand);
               break;
             case 'mts': 
               // Call func mts
