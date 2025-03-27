@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // TOPICS //  
 // [ 1 ] Create the terminal inputs commands : DONE
 // [ 2 ] Instaling the dependencies : DONE
