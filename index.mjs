@@ -4,7 +4,7 @@
 // [ 3 ] Creating the directories : DONE 
 //   - commands
 //     - utility (optional)
-// [ 4 ] Creating the files (according the user preference)
+// [ 4 ] Creating the files (according the user preference) : DONE
 //   - deploycommands
 //   - index
 //   - ping (optional)
@@ -267,8 +267,7 @@ function terminalInputs() {
       message: "Choose one language / type model: ",
       choices: [
         {name: "Javascript (cjs)", value: "cjs", description: "Javascript but type commonJs"},
-        {name: "Javascript (mjs)", value: "mjs", description: "Javascript but type moduleJs"},
-        {name: "Typescript (mts)", value: "mts", description: "Typescript but type moduleJs"}
+        {name: "Javascript (mjs)", value: "mjs", description: "Javascript but type moduleJs"}
       ]
     });
 
@@ -378,10 +377,6 @@ function terminalInputs() {
             case 'mjs': 
               // Call func mjs
               createmjs(testcommand);
-              break;
-            case 'mts': 
-              // Call func mts
-
               break;
 
             default:
