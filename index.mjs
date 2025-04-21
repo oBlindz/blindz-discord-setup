@@ -127,6 +127,10 @@ const rest = new REST().setToken(token);
 
   // Test command area
   if(tstcmd == true){
+    mkdirSync('./commands/utility', (err => {
+     console.error(err);
+    }));
+    console.log("'utility' directory created");
     const cjs_tst_code = `const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -150,13 +154,29 @@ module.exports = {
 function createmjs(tstcmd) {
   const mjs_main_code = `import {Client, Events, GatewayIntentBits, REST, Routes} from 'discord.js';
 import config from './config.json' assert {type: 'json'};
+import {fileURLToPath} from 'node:url';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const client = new Client({intents: [GatewayIntentBits.Guilds] });
 client.login(config.token);
 
-const commands = [
-  // All commands are objects that contains name and description at least
-  ];
+const commands = [];
+
+const commandsPath = path.join(__dirname + '/commands');
+const filesPath = fs.readdirSync(commandsPath);
+
+try {
+  for(let c = 0; c < filesPath.length; c++){
+    const file = path.join(filesPath[c]);
+    const command = await import('${commandsPath}/${file}');
+    commands.push(command.data);
+  };
+} catch (err) {
+  console.error(err);
+};
 
 const rest = new REST({version: '10'}).setToken(config.token);
 
@@ -170,67 +190,71 @@ try {
 
 client.on(Events.InteractionCreate, interaction => {
   if(!interaction.isChatInputCommand()) return; 
-  
-  // Register your command here
-});
-
-client.once(Events.ClientReady, () => {
-  console.log('bot online');
-});
-  `; 
-
-  const mjs_main_code_tstcmd = `import {Client, Events, GatewayIntentBits, REST, Routes} from 'discord.js';
-import config from './config.json' assert {type: 'json'};
-
-// Import your commands 
-import ping from './commands/utility/ping.mjs';
-
-const client = new Client({intents: [GatewayIntentBits.Guilds] });
-client.login(config.token);
-
-const commands = [
-  // All commands are objects that contains name and description at least
-  {
-    name: ping.name,
-    description: ping.description
-  },
-];
-
-const rest = new REST({version: '10'}).setToken(config.token);
-
-try {
-  console.log('Refreshing commands');
-  await rest.put(Routes.applicationCommands(config.clientId), {body: commands});
-  console.log('Commands refreshed');
-} catch (err) {
-  console.error(err);
-}
-
-client.on(Events.InteractionCreate, interaction => {
-  if(!interaction.isChatInputCommand()) return; 
-  
-  // Register your command here
-  if(interaction.commandName === 'ping'){
-    interaction.reply('pongoo');
+  if(interaction.commandName == 'create') {
+    interaction.reply('Hello World!');
   };
 });
 
 client.once(Events.ClientReady, () => {
   console.log('bot online');
-});
-  `;
+});`; 
 
-  const mjs_ping_code = `const ping = {
-  name: 'ping',
-  description: 'returns pong',
+  const mjs_main_code_tstcmd = `import {Client, Events, GatewayIntentBits, REST, Routes} from 'discord.js';
+import config from './config.json' assert {type: 'json'};
+import {fileURLToPath} from 'node:url';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const client = new Client({intents: [GatewayIntentBits.Guilds] });
+client.login(config.token);
+
+const commands = [];
+
+const commandsPath = path.join(__dirname + '/commands');
+const filesPath = fs.readdirSync(commandsPath);
+
+try {
+  for(let c = 0; c < filesPath.length; c++){
+    const file = path.join(filesPath[c]);
+    const command = await import('${commandsPath}/${file}'); // Switch '
+    commands.push(command.data);
+  };
+} catch (err) {
+  console.error(err);
 };
 
-export default ping;
-  `;
+const rest = new REST({version: '10'}).setToken(config.token);
+
+try {
+  console.log('Refreshing commands');
+  await rest.put(Routes.applicationCommands(config.clientId), {body: commands});
+  console.log('Commands refreshed');
+} catch (err) {
+  console.error(err);
+}
+
+client.on(Events.InteractionCreate, interaction => {
+  if(!interaction.isChatInputCommand()) return; 
+  if(interaction.commandName == 'create') {
+    interaction.reply('Hello World!');
+  };
+});
+
+client.once(Events.ClientReady, () => {
+  console.log('bot online');
+});`;
+
+  const mjs_create_code = `import { SlashCommandBuilder} from 'discord.js';
+
+export const data = new SlashCommandBuilder()
+  .setName('create')
+  .setDescription('Creates a channel');`;
 
   if(tstcmd == true) {
     // Create mjs_main_code_tstcmd file
-    writeFileSync('./commands/utility/ping.mjs', mjs_ping_code, 'utf8');
+    writeFileSync('./commands/create.mjs', mjs_create_code, 'utf8');
     writeFileSync('main.mjs', mjs_main_code_tstcmd, 'utf8');
   } else {
     // Create mjs_main_code file
@@ -350,14 +374,6 @@ function terminalInputs() {
           if(err) console.error(err);
         }));
         console.log("'commands' directory created");
-
-        // If "testcommand === 'yes'" create one more directory
-        if(testcommand == true) {
-          mkdirSync('./commands/utility', (err => {
-            console.error(err);
-          }));
-          console.log("'utility' directory created");
-        };
 
         // Start step 4
           // create .config.json
