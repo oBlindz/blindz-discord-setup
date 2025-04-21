@@ -171,7 +171,7 @@ const filesPath = fs.readdirSync(commandsPath);
 try {
   for(let c = 0; c < filesPath.length; c++){
     const file = path.join(filesPath[c]);
-    const command = await import('${commandsPath}/${file}');
+    const command = await import('$ {commandsPath}/$ {file}'); // Swtich '
     commands.push(command.data);
   };
 } catch (err) {
@@ -218,7 +218,7 @@ const filesPath = fs.readdirSync(commandsPath);
 try {
   for(let c = 0; c < filesPath.length; c++){
     const file = path.join(filesPath[c]);
-    const command = await import('${commandsPath}/${file}'); // Switch '
+    const command = await import('$ {commandsPath}/$ {file}'); // Switch '
     commands.push(command.data);
   };
 } catch (err) {

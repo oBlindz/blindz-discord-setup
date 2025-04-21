@@ -1,13 +1,9 @@
-# Create your initial setup
+# blindz-discord-setup Creates your discord bot setup
+Use my package to setup your own discordJS bot, the usage is very simple, you just have to run `npx blindz-discord-setup` on your terminal and fill out the questions!
 
-To create your initial setup you just have to run `npx blindz-discord-setup` on your terminal.
+This is an open source code, so if you want to see the source code, you can find it here: https://github.com/oBlindz/blindz-discord-setup.git
 
-This command will start the program, that will answer things and you have to anser, remember, this is just a bot that helps to create initial setups, and it is in development stage, so if you got any error, please contact me.
-
-## Social medias: 
+# Social Medias:
 - Instagram: @yblindz
 - Discord: yblindz
 - GitHhub: oBlindz
-
-## Project repository:
-- Link: https://github.com/oBlindz/blindz-discord-setup.git
